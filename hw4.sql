@@ -1,8 +1,11 @@
 -- hw4.sql
 -- Database creation and initial data for To-Do List Application
 
--- Create database if not exists
-CREATE DATABASE IF NOT EXISTS todo_list;
+-- Drop database if exists to ensure a clean setup
+DROP DATABASE IF EXISTS todo_list;
+
+-- Create database
+CREATE DATABASE todo_list;
 USE todo_list;
 
 -- Create users table
@@ -10,6 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
+    theme VARCHAR(10) NOT NULL DEFAULT 'light',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -38,7 +42,7 @@ CREATE TABLE IF NOT EXISTS tasks (
 
 -- Insert sample users
 INSERT INTO users (username, password) VALUES 
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),  -- password: password
+('admin', 'password'),
 ('demo', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');   -- password: password
 
 -- Get user IDs

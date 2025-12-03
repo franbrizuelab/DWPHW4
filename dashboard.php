@@ -112,12 +112,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>To-Do List - Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="<?php echo $_SESSION['theme'] ?? 'light'; ?>">
     <div class="container">
         <header>
             <h1>To-Do List</h1>
             <div class="user-info">
                 Welcome, <?php echo htmlspecialchars($username); ?> | <a href="logout.php">Logout</a>
+                <button id="theme-toggle">
+                    <img id="theme-icon" src="assets/<?php echo ($_SESSION['theme'] ?? 'light') === 'light' ? 'moon.svg' : 'sun.svg'; ?>" alt="Toggle Theme">
+                </button>
             </div>
         </header>
         

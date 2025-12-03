@@ -1,6 +1,26 @@
 /* css/style.css */
 /* Styles for To-Do List Application */
 
+:root {
+    --bg-color-light: #f5f5f5;
+    --text-color-light: #333;
+    --container-bg-light: #fff;
+    --header-border-light: #ddd;
+    --header-text-light: #2c3e50;
+    --link-color-light: #e74c3c;
+    --button-bg-light: #3498db;
+    --button-text-light: #fff;
+
+    --bg-color-dark: #2c3e50;
+    --text-color-dark: #ecf0f1;
+    --container-bg-dark: #34495e;
+    --header-border-dark: #7f8c8d;
+    --header-text-dark: #ecf0f1;
+    --link-color-dark: #e74c3c;
+    --button-bg-dark: #3498db;
+    --button-text-dark: #fff;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -9,10 +29,29 @@
 }
 
 body {
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
     line-height: 1.6;
 }
+
+body.dark {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+}
+
+#theme-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+#theme-icon {
+    width: 24px;
+    height: 24px;
+}
+
 
 .container {
     max-width: 1200px;
@@ -26,12 +65,20 @@ header {
     align-items: center;
     margin-bottom: 30px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--header-border-light);
+}
+
+body.dark header {
+    border-bottom: 1px solid var(--header-border-dark);
 }
 
 header h1 {
-    color: #2c3e50;
+    color: var(--header-text-light);
     font-size: 2.5rem;
+}
+
+body.dark header h1 {
+    color: var(--header-text-dark);
 }
 
 .user-info {
@@ -39,9 +86,13 @@ header h1 {
 }
 
 .user-info a {
-    color: #e74c3c;
+    color: var(--link-color-light);
     text-decoration: none;
     font-weight: bold;
+}
+
+body.dark .user-info a {
+    color: var(--link-color-dark);
 }
 
 .user-info a:hover {
@@ -55,17 +106,27 @@ main {
 }
 
 section {
-    background-color: #fff;
+    background-color: var(--container-bg-light);
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+body.dark section {
+    background-color: var(--container-bg-dark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
 h2 {
-    color: #2c3e50;
+    color: var(--header-text-light);
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+}
+
+body.dark h2 {
+    color: var(--header-text-dark);
+    border-bottom: 1px solid var(--header-border-dark);
 }
 
 h3 {
@@ -92,11 +153,22 @@ select {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
+    background-color: var(--container-bg-light);
+    color: var(--text-color-light);
+}
+
+body.dark input[type="text"],
+body.dark input[type="password"],
+body.dark input[type="date"],
+body.dark select {
+    background-color: var(--container-bg-dark);
+    color: var(--text-color-dark);
+    border: 1px solid var(--header-border-dark);
 }
 
 .btn {
-    background-color: #3498db;
-    color: white;
+    background-color: var(--button-bg-light);
+    color: var(--button-text-light);
     border: none;
     padding: 10px 15px;
     border-radius: 4px;
@@ -166,14 +238,27 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
+body.dark th, body.dark td {
+    border-bottom: 1px solid var(--header-border-dark);
+}
+
 th {
     background-color: #f2f2f2;
     font-weight: bold;
 }
 
+body.dark th {
+    background-color: #4a6278;
+}
+
 tr.completed {
     background-color: #f9f9f9;
     color: #999;
+}
+
+body.dark tr.completed {
+    background-color: #2c3e50;
+    color: #7f8c8d;
 }
 
 .inline-form {
@@ -193,13 +278,17 @@ tr.completed {
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: var(--container-bg-light);
     margin: 15% auto;
     padding: 20px;
     border-radius: 8px;
     width: 50%;
     max-width: 500px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .modal-content {
+    background-color: var(--container-bg-dark);
 }
 
 .close {
@@ -212,6 +301,10 @@ tr.completed {
 
 .close:hover {
     color: #000;
+}
+
+body.dark .close:hover {
+    color: #fff;
 }
 
 .default-category {
@@ -230,16 +323,24 @@ tr.completed {
 .login-form {
     max-width: 400px;
     margin: 50px auto;
-    background-color: #fff;
+    background-color: var(--container-bg-light);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+body.dark .login-form {
+    background-color: var(--container-bg-dark);
+}
+
 .login-form h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #2c3e50;
+    color: var(--header-text-light);
+}
+
+body.dark .login-form h1 {
+    color: var(--header-text-dark);
 }
 
 .login-form p {

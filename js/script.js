@@ -76,4 +76,24 @@ document.addEventListener('DOMContentLoaded', function() {
     deadlineInputs.forEach(input => {
         input.setAttribute('min', today);
     });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const isDarkMode = document.body.classList.contains('dark');
+        const newTheme = isDarkMode ? 'dark' : 'light';
+
+        themeIcon.src = isDarkMode ? 'assets/sun.svg' : 'assets/moon.svg';
+
+        fetch('update_theme.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ theme: newTheme })
+        });
+    });
 });
