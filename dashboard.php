@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1>To-Do List</h1>
             <div class="user-info">
                 Welcome, <?php echo htmlspecialchars($username); ?> | <a href="logout.php">Logout</a>
-                <button id="theme-toggle">
+                <button id="theme-toggle" class="icon-btn">
                     <img id="theme-icon" src="assets/<?php echo ($_SESSION['theme'] ?? 'light') === 'light' ? 'moon.svg' : 'sun.svg'; ?>" alt="Toggle Theme">
                 </button>
             </div>
@@ -160,40 +160,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <main>
             <section class="task-section">
-                <h2>Tasks</h2>
-                
-                <!-- Add Task Form -->
-                <div class="add-form">
-                    <h3>Add New Task</h3>
-                    <form action="dashboard.php" method="post">
-                        <div class="form-group">
-                            <label for="task_name">Task Name</label>
-                            <input type="text" id="task_name" name="task_name" required autocomplete="off" value="<?php echo htmlspecialchars($form_data['task_name'] ?? ''); ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="deadline">Deadline</label>
-                            <input type="date" id="deadline" name="deadline" value="<?php echo htmlspecialchars($form_data['deadline'] ?? ''); ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="category_id">Category</label>
-                            <select id="category_id" name="category_id">
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category['id']; ?>"
-                                        <?php echo ((isset($form_data['category_id']) && $form_data['category_id'] == $category['id'])) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($category['name']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <button type="submit" name="add_task" class="btn">Add Task</button>
-                    </form>
+                <div class="section-header">
+                    <h2>Tasks</h2>
+                    <button id="show-add-task-form" class="add-btn icon-btn">
+                        <img src="assets/plus.svg" alt="Add Task">
+                    </button>
+                </div>
+
+                <!-- Add Task Form (now a popup) -->
+                <div id="add-task-container" class="add-form-container">
+                    <div class="add-form">
+                        <button class="close-form-btn">&times;</button>
+                        <form action="dashboard.php" method="post">
+                            <h3>Add New Task</h3>
+                            <div class="form-group">
+                                <label for="task_name">Task Name</label>
+                                <input type="text" id="task_name" name="task_name" required autocomplete="off" value="<?php echo htmlspecialchars($form_data['task_name'] ?? ''); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="deadline">Deadline</label>
+                                <input type="date" id="deadline" name="deadline" value="<?php echo htmlspecialchars($form_data['deadline'] ?? ''); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="category_id">Category</label>
+                                <select id="category_id" name="category_id">
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?php echo $category['id']; ?>"
+                                            <?php echo ((isset($form_data['category_id']) && $form_data['category_id'] == $category['id'])) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($category['name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <button type="submit" name="add_task" class="btn">Add Task</button>
+                        </form>
+                    </div>
                 </div>
                 
                 <!-- Tasks List -->
                 <div class="tasks-list">
-                    <h3>Your Tasks</h3>
                     <?php if (empty($tasks)): ?>
-                        <p>No tasks yet. Add your first task above!</p>
+                        <p>No tasks yet. Add your first task!</p>
                     <?php else: ?>
                         <table>
                             <thead>
@@ -276,25 +283,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </section>
             
             <section class="category-section">
-                <h2>Categories</h2>
-                
-                <!-- Add Category Form -->
-                <div class="add-form">
-                    <h3>Add New Category</h3>
-                    <form action="dashboard.php" method="post">
-                        <div class="form-group">
-                            <label for="category_name">Category Name</label>
-                            <input type="text" id="category_name" name="category_name" required autocomplete="off" value="<?php echo htmlspecialchars($form_data['category_name'] ?? ''); ?>">
-                        </div>
-                        <button type="submit" name="add_category" class="btn">Add Category</button>
-                    </form>
+                <div class="section-header">
+                    <h2>Categories</h2>
+                    <button id="show-add-category-form" class="add-btn icon-btn">
+                        <img src="assets/plus.svg" alt="Add Category">
+                    </button>
                 </div>
-                
+
+                <!-- Add Category Form (now a popup) -->
+                <div id="add-category-container" class="add-form-container">
+                    <div class="add-form">
+                        <button class="close-form-btn">&times;</button>
+                        <form action="dashboard.php" method="post">
+                            <h3>Add New Category</h3>
+                            <div class="form-group">
+                                <label for="category_name">Category Name</label>
+                                <input type="text" id="category_name" name="category_name" required autocomplete="off" value="<?php echo htmlspecialchars($form_data['category_name'] ?? ''); ?>">
+                            </div>
+                            <button type="submit" name="add_category" class="btn">Add Category</button>
+                        </form>
+                    </div>
+                </div>
+
                 <!-- Categories List -->
                 <div class="categories-list">
-                    <h3>Your Categories</h3>
                     <?php if (empty($categories)): ?>
-                        <p>No categories yet. Add your first category above!</p>
+                        <p>No categories yet. Add your first category!</p>
                     <?php else: ?>
                         <table>
                             <thead>

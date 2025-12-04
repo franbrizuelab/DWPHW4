@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
+    themeIcon = document.querySelector('#theme-toggle img'); // Corrected selector
 
     themeToggle.addEventListener('click', (event) => {
         event.preventDefault();
@@ -155,4 +155,26 @@ document.addEventListener('DOMContentLoaded', function() {
             popup.classList.remove('show');
         }, 1000);
     }
+
+    // --- Add Form Popups --- //
+    function initAddFormPopup(showBtnId, containerId) {
+        const showBtn = document.getElementById(showBtnId);
+        const container = document.getElementById(containerId);
+        if (!showBtn || !container) return;
+
+        const closeBtn = container.querySelector('.close-form-btn');
+        
+        showBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.add('show');
+        });
+
+        closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.remove('show');
+        });
+    }
+
+    initAddFormPopup('show-add-task-form', 'add-task-container');
+    initAddFormPopup('show-add-category-form', 'add-category-container');
 });
