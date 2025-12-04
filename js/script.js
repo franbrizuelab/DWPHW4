@@ -60,12 +60,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Confirm before deleting
-    const deleteBtns = document.querySelectorAll('.delete-btn');
-    deleteBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            if (!confirm('Are you sure you want to delete this item?')) {
-                e.preventDefault();
+    // Smooth deletion with fetch
+    const deleteForms = document.querySelectorAll('form[action="dashboard.php"] button[name="delete_task"], form[action="dashboard.php"] button[name="delete_category"]');
+    deleteForms.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); // Stop form submission
+
+            if (confirm('Are you sure you want to delete this item?')) {
+                const form = this.closest('form');
+                const row = this.closest('tr');
+                const button = this;
+
+                // Add deleting class to trigger animation
+                row.classList.add('deleting');
+
+                const formData = new FormData(form);
+                formData.append('ajax', 'true');
+                formData.append(button.name, button.value); // <-- THE FIX
+
+                fetch('api.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Wait for animation to finish before removing the element
+                        row.addEventListener('transitionend', () => {
+                            row.remove();
+                        });
+                    } else {
+                        // If deletion fails, remove the class and alert user
+                        row.classList.remove('deleting');
+                        let errorMessage = 'Error: Could not delete item.';
+                        if (data.message) {
+                            errorMessage += ' Server said: ' + JSON.stringify(data.message);
+                        }
+                        alert(errorMessage);
+                    }
+                })
+                .catch(error => {
+                    row.classList.remove('deleting');
+                    alert('An error occurred. Please try again.');
+                    console.error('Error:', error);
+                });
             }
         });
     });
@@ -177,4 +215,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initAddFormPopup('show-add-task-form', 'add-task-container');
     initAddFormPopup('show-add-category-form', 'add-category-container');
+
+    // Global Escape key listener for popups
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const addTaskContainer = document.getElementById('add-task-container');
+            const addCategoryContainer = document.getElementById('add-category-container');
+            
+            if (addTaskContainer && addTaskContainer.classList.contains('show')) {
+                addTaskContainer.classList.remove('show');
+                e.preventDefault(); // Prevent further actions if Escape closes a popup
+            }
+            if (addCategoryContainer && addCategoryContainer.classList.contains('show')) {
+                addCategoryContainer.classList.remove('show');
+                e.preventDefault();
+            }
+        }
+    });
 });

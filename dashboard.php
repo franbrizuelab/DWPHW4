@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (empty($deadline)) {
             $_SESSION['error_message'] = "Deadline is empty!";
-            $_SESSION['form_data'] = $_POST; // Save form data
+            $_SESSION['form_data'] = $_POST;
         } else {
             $stmt = $pdo->prepare("INSERT INTO tasks (name, deadline, category_id, user_id) VALUES (?, ?, ?, ?)");
             $stmt->execute([$task_name, $deadline, $category_id, $user_id]);
@@ -68,14 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['add_category'])) {
         $category_name = $_POST['category_name'];
 
-        // Check for duplicates
         $stmt_check = $pdo->prepare("SELECT COUNT(*) FROM categories WHERE name = ? AND user_id = ?");
         $stmt_check->execute([$category_name, $user_id]);
         $count = $stmt_check->fetchColumn();
 
         if ($count > 0) {
             $_SESSION['error_message'] = "Category '$category_name' already exists!";
-            $_SESSION['form_data'] = $_POST; // Save form data
+            $_SESSION['form_data'] = $_POST;
         } else {
             $stmt = $pdo->prepare("INSERT INTO categories (name, user_id) VALUES (?, ?)");
             $stmt->execute([$category_name, $user_id]);
@@ -95,16 +94,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['delete_category'])) {
         $category_id = $_POST['category_id'];
         
-        // First delete all tasks in this category
-        $stmt = $pdo->prepare("DELETE FROM tasks WHERE category_id = ? AND user_id = ?");
-        $stmt->execute([$category_id, $user_id]);
+        $stmt_tasks = $pdo->prepare("DELETE FROM tasks WHERE category_id = ? AND user_id = ?");
+        $stmt_tasks->execute([$category_id, $user_id]);
         
-        // Then delete the category
-        $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ? AND user_id = ?");
-        $stmt->execute([$category_id, $user_id]);
+        $stmt_cat = $pdo->prepare("DELETE FROM categories WHERE id = ? AND user_id = ?");
+        $stmt_cat->execute([$category_id, $user_id]);
     }
     
-    // Redirect to prevent form resubmission
+    // For all non-AJAX POST requests, redirect to prevent form resubmission
     header("Location: dashboard.php");
     exit();
 }
