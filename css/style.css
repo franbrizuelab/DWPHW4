@@ -21,6 +21,7 @@
     --button-bg-dark: #3498db;
     --button-text-dark: #fff;
     --theme-toggle-bg-dark: #425568;
+    --transition-speed: 0.9s;
 }
 
 * {
@@ -34,6 +35,7 @@ body {
     background-color: var(--bg-color-light);
     color: var(--text-color-light);
     line-height: 1.6;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 body.dark {
@@ -50,6 +52,7 @@ body.dark {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color var(--transition-speed);
 }
 
 body.dark #theme-toggle {
@@ -75,6 +78,7 @@ header {
     margin-bottom: 30px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--header-border-light);
+    transition: border-bottom-color var(--transition-speed);
 }
 
 body.dark header {
@@ -84,6 +88,7 @@ body.dark header {
 header h1 {
     color: var(--header-text-light);
     font-size: 2.5rem;
+    transition: color var(--transition-speed);
 }
 
 body.dark header h1 {
@@ -101,6 +106,7 @@ body.dark header h1 {
     color: var(--link-color-light);
     text-decoration: none;
     font-weight: bold;
+    transition: color var(--transition-speed);
 }
 
 body.dark .user-info a {
@@ -122,6 +128,7 @@ section {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color var(--transition-speed);
 }
 
 body.dark section {
@@ -134,6 +141,7 @@ h2 {
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+    transition: color var(--transition-speed), border-bottom-color var(--transition-speed);
 }
 
 body.dark h2 {
@@ -167,6 +175,7 @@ select {
     font-size: 1rem;
     background-color: var(--container-bg-light);
     color: var(--text-color-light);
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
 }
 
 body.dark input[type="text"],
@@ -248,6 +257,7 @@ th, td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    transition: border-bottom-color var(--transition-speed);
 }
 
 body.dark th, body.dark td {
@@ -257,6 +267,7 @@ body.dark th, body.dark td {
 th {
     background-color: #f2f2f2;
     font-weight: bold;
+    transition: background-color var(--transition-speed);
 }
 
 body.dark th {
@@ -266,6 +277,7 @@ body.dark th {
 tr.completed {
     background-color: #f9f9f9;
     color: #999;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 body.dark tr.completed {
@@ -297,6 +309,7 @@ body.dark tr.completed {
     width: 50%;
     max-width: 500px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: background-color var(--transition-speed);
 }
 
 body.dark .modal-content {
@@ -309,6 +322,7 @@ body.dark .modal-content {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    transition: color var(--transition-speed);
 }
 
 .close:hover {
@@ -339,6 +353,7 @@ body.dark .close:hover {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color var(--transition-speed);
 }
 
 body.dark .login-form {
@@ -349,6 +364,7 @@ body.dark .login-form {
     text-align: center;
     margin-bottom: 30px;
     color: var(--header-text-light);
+    transition: color var(--transition-speed);
 }
 
 body.dark .login-form h1 {
@@ -383,7 +399,8 @@ body.dark .login-form h1 {
     position: fixed;
     border-radius: 50%;
     transform: scale(0);
+    opacity: 1;
     transform-origin: center center;
     z-index: 9999;
-    transition: transform 0.5s ease-in-out;
+    transition: transform var(--transition-speed) ease-in-out, opacity var(--transition-speed) ease-in-out;
 }

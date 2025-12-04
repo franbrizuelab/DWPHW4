@@ -86,6 +86,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const isDark = document.body.classList.contains('dark');
         const newTheme = isDark ? 'light' : 'dark';
+        
+        // Toggle theme immediately to start transitions
+        document.body.classList.toggle('dark');
+        const isDarkMode = document.body.classList.contains('dark');
+        themeIcon.src = isDarkMode ? 'assets/sun.svg' : 'assets/moon.svg';
 
         // 1. Create the circle
         const circle = document.createElement('div');
@@ -118,14 +123,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         requestAnimationFrame(() => {
             circle.style.transform = 'scale(1)';
+            circle.style.opacity = '0';
         });
 
-        // 5. After animation, switch theme and cleanup
+        // 5. After animation, cleanup
         circle.addEventListener('transitionend', () => {
-            document.body.classList.toggle('dark');
-            const isDarkMode = document.body.classList.contains('dark');
-            themeIcon.src = isDarkMode ? 'assets/sun.svg' : 'assets/moon.svg';
-
             fetch('update_theme.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
