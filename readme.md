@@ -5,22 +5,41 @@
 - Name: 孫傅康
 
 ## System Structure
-This To-Do List application is built with PHP, MySQL, HTML, CSS, and JavaScript. The application allows users to register, log in, and manage their tasks and categories.
+This To-Do List application is built with PHP, MySQL, HTML, CSS, and JavaScript. The application allows users to register, log in, and manage their tasks and categories with a modern, dynamic user interface.
 
 ### File Structure
+```
 HW4_112550176_孫傅康/
+├── assets/
+│   ├── moon.svg
+│   ├── pencil.svg
+│   ├── plus.svg
+│   ├── sun.svg
+│   └── trash.svg
 ├── css/
 │   └── style.css
 ├── js/
 │   └── script.js
 ├── config/
 │   └── database.php
-├── index.php (login page)
+├── api.php
+├── index.php
 ├── register.php
 ├── logout.php
-├── dashboard.php (main to-do list page)
+├── dashboard.php
 ├── hw4.sql
-└── README.mds
+└── readme.md
+```
+
+### Key Files and Directories
+-   **`dashboard.php`**: The main application page where users manage their tasks and categories.
+-   **`index.php` / `register.php`**: Handle user login and registration.
+-   **`api.php`**: A dedicated backend endpoint to handle background AJAX requests, such as deleting items, ensuring smooth UI updates without page reloads.
+-   **`assets/`**: Contains all SVG icons used throughout the application for a clean, vectorized look.
+-   **`css/style.css`**: Main stylesheet, including all variables for theme colors, animations, and responsive design.
+-   **`js/script.js`**: Handles all client-side interactivity, including theme switching, pop-up animations, and smooth deletion.
+-   **`config/database.php`**: Contains the database connection configuration.
+-   **`hw4.sql`**: The SQL file to set up the initial database schema and sample data.
 
 
 ## How to Run the Project
@@ -107,6 +126,34 @@ The application uses three main tables:
 - **Modal Dialogs**: Edit operations use modal dialogs for a better user experience.
 - **Visual Feedback**: Completed tasks are visually distinguished.
 - **Confirmation Dialogs**: Delete operations require confirmation to prevent accidental deletions.
+
+### Dynamic UX Features
+The application has been updated with several modern, dynamic features to enhance the user experience:
+
+-   **Animated Theme Switching:**
+    -   Users can toggle between light and dark themes.
+    -   The switch is accompanied by a smooth, expanding circle animation originating from the theme button.
+    -   All page elements transition their colors gradually for a seamless effect.
+    -   Animation speeds can be configured via CSS variables in `style.css`.
+
+-   **Interactive "Add" Forms:**
+    -   The forms for adding new tasks and categories are now interactive pop-ups.
+    -   They are triggered by new circular "plus" buttons located in the section headers.
+    -   The forms appear with a smooth fade-in and scale-up animation, overlaid on the current content without causing page displacement.
+    -   Pop-ups can be closed with either the dedicated "x" button or by pressing the `Escape` key.
+
+-   **Icon-based Actions & Hover Effects:**
+    -   The text-based "Edit" and "Delete" buttons in the lists have been replaced with modern pencil and trash can SVG icons.
+    -   These icon buttons provide visual feedback with a subtle highlight effect on hover.
+
+-   **Animated Error Handling:**
+    -   When the server detects an error (e.g., creating a duplicate category or submitting a task with an empty field), a custom animated pop-up appears.
+    -   The pop-up is centered, and the background smoothly dims and blurs to draw focus to the message.
+    *   Crucially, the user's input in the form is preserved after the error, so they do not have to type everything again.
+
+-   **Smooth Deletion:**
+    -   Deleting a task or category no longer requires a page reload.
+    -   Items are removed from the list with a smooth fade-out animation, providing a better and faster user experience.
 
 ## Security Considerations
 - Passwords are securely hashed using PHP's `password_hash()` function.
