@@ -234,11 +234,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <button class="edit-btn" data-task-id="<?php echo $task['id']; ?>" 
                                                     data-task-name="<?php echo htmlspecialchars($task['name']); ?>"
                                                     data-deadline="<?php echo $task['deadline']; ?>"
-                                                    data-category-id="<?php echo $task['category_id']; ?>">Edit</button>
+                                                    data-category-id="<?php echo $task['category_id']; ?>"><img src="assets/pencil.svg" alt="Edit"></button>
                                             
                                             <form action="dashboard.php" method="post" class="inline-form">
                                                 <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                                <button type="submit" name="delete_task" class="delete-btn">Delete</button>
+                                                <button type="submit" name="delete_task" class="delete-btn"><img src="assets/trash.svg" alt="Delete"></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -321,11 +321,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <td>
                                             <?php if ($category['name'] !== 'none'): ?>
                                                 <button class="edit-category-btn" data-category-id="<?php echo $category['id']; ?>" 
-                                                        data-category-name="<?php echo htmlspecialchars($category['name']); ?>">Edit</button>
+                                                        data-category-name="<?php echo htmlspecialchars($category['name']); ?>"><img src="assets/pencil.svg" alt="Edit"></button>
                                                 
                                                 <form action="dashboard.php" method="post" class="inline-form">
                                                     <input type="hidden" name="category_id" value="<?php echo $category['id']; ?>">
-                                                    <button type="submit" name="delete_category" class="delete-btn">Delete</button>
+                                                    <button type="submit" name="delete_category" class="delete-btn"><img src="assets/trash.svg" alt="Delete"></button>
                                                 </form>
                                             <?php else: ?>
                                                 <span class="default-category">Default category (cannot be modified)</span>
