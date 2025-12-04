@@ -81,19 +81,58 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
 
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        const isDarkMode = document.body.classList.contains('dark');
-        const newTheme = isDarkMode ? 'dark' : 'light';
+    themeToggle.addEventListener('click', (event) => {
+        event.preventDefault();
 
-        themeIcon.src = isDarkMode ? 'assets/sun.svg' : 'assets/moon.svg';
+        const isDark = document.body.classList.contains('dark');
+        const newTheme = isDark ? 'light' : 'dark';
 
-        fetch('update_theme.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ theme: newTheme })
+        // 1. Create the circle
+        const circle = document.createElement('div');
+        circle.classList.add('theme-transition-circle');
+
+        // 2. Set color
+        const newThemeBg = newTheme === 'dark' ? '#2c3e50' : '#f5f5f5';
+        circle.style.backgroundColor = newThemeBg;
+
+        // 3. Set position and size
+        const clickX = event.clientX;
+        const clickY = event.clientY;
+
+        const screenW = window.innerWidth;
+        const screenH = window.innerHeight;
+        const radius = Math.max(
+            Math.hypot(clickX, clickY),
+            Math.hypot(screenW - clickX, clickY),
+            Math.hypot(clickX, screenH - clickY),
+            Math.hypot(screenW - clickX, screenH - clickY)
+        );
+        
+        circle.style.width = `${radius * 2}px`;
+        circle.style.height = `${radius * 2}px`;
+        circle.style.left = `${clickX - radius}px`;
+        circle.style.top = `${clickY - radius}px`;
+
+        // 4. Add to DOM and animate
+        document.body.appendChild(circle);
+
+        requestAnimationFrame(() => {
+            circle.style.transform = 'scale(1)';
         });
+
+        // 5. After animation, switch theme and cleanup
+        circle.addEventListener('transitionend', () => {
+            document.body.classList.toggle('dark');
+            const isDarkMode = document.body.classList.contains('dark');
+            themeIcon.src = isDarkMode ? 'assets/sun.svg' : 'assets/moon.svg';
+
+            fetch('update_theme.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ theme: newTheme })
+            });
+            
+            circle.remove();
+        }, { once: true });
     });
 });

@@ -378,3 +378,12 @@ body.dark .login-form h1 {
         width: 80%;
     }
 }
+
+.theme-transition-circle {
+    position: fixed;
+    border-radius: 50%;
+    transform: scale(0);
+    transform-origin: center center;
+    z-index: 9999;
+    transition: transform 0.5s ease-in-out;
+}
