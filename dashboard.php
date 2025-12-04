@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form action="dashboard.php" method="post">
                         <div class="form-group">
                             <label for="task_name">Task Name</label>
-                            <input type="text" id="task_name" name="task_name" required>
+                            <input type="text" id="task_name" name="task_name" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="deadline">Deadline</label>
@@ -218,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="hidden" id="edit-task-id" name="task_id">
                             <div class="form-group">
                                 <label for="edit-task-name">Task Name</label>
-                                <input type="text" id="edit-task-name" name="task_name" required>
+                                <input type="text" id="edit-task-name" name="task_name" required autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="edit-deadline">Deadline</label>
@@ -249,7 +249,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form action="dashboard.php" method="post">
                         <div class="form-group">
                             <label for="category_name">Category Name</label>
-                            <input type="text" id="category_name" name="category_name" required>
+                            <input type="text" id="category_name" name="category_name" required autocomplete="off">
                         </div>
                         <button type="submit" name="add_category" class="btn">Add Category</button>
                     </form>
@@ -301,7 +301,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="hidden" id="edit-category-id" name="category_id">
                             <div class="form-group">
                                 <label for="edit-category-name">Category Name</label>
-                                <input type="text" id="edit-category-name" name="category_name" required>
+                                <input type="text" id="edit-category-name" name="category_name" required autocomplete="off">
                             </div>
                             <button type="submit" name="update_category" class="btn">Update Category</button>
                         </form>
