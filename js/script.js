@@ -137,4 +137,22 @@ document.addEventListener('DOMContentLoaded', function() {
             circle.remove();
         }, { once: true });
     });
+
+    // --- Flash Popup --- //
+    if (typeof flashMessage !== 'undefined') {
+        const backdrop = document.getElementById('flash-popup-backdrop');
+        const popup = document.getElementById('flash-popup');
+        const messageElement = document.getElementById('flash-popup-message');
+
+        // Set message and show popup
+        messageElement.textContent = flashMessage;
+        backdrop.classList.add('show');
+        popup.classList.add('show');
+
+        // Hide after 1 second
+        setTimeout(() => {
+            backdrop.classList.remove('show');
+            popup.classList.remove('show');
+        }, 1000);
+    }
 });

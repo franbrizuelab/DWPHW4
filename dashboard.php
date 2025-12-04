@@ -9,8 +9,15 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
- $user_id = $_SESSION['user_id'];
- $username = $_SESSION['username'];
+$user_id = $_SESSION['user_id'];
+$username = $_SESSION['username'];
+
+// Retrieve form data if available from a previous error
+$form_data = [];
+if (isset($_SESSION['form_data'])) {
+    $form_data = $_SESSION['form_data'];
+    unset($_SESSION['form_data']); // Clear it after retrieving
+}
 
 // Handle task operations
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,9 +26,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $task_name = $_POST['task_name'];
         $deadline = $_POST['deadline'];
         $category_id = $_POST['category_id'];
-        
-        $stmt = $pdo->prepare("INSERT INTO tasks (name, deadline, category_id, user_id) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$task_name, $deadline, $category_id, $user_id]);
+
+        if (empty($deadline)) {
+            $_SESSION['error_message'] = "Deadline is empty!";
+            $_SESSION['form_data'] = $_POST; // Save form data
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO tasks (name, deadline, category_id, user_id) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$task_name, $deadline, $category_id, $user_id]);
+        }
     }
     
     // Update task
@@ -55,9 +67,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add new category
     if (isset($_POST['add_category'])) {
         $category_name = $_POST['category_name'];
-        
-        $stmt = $pdo->prepare("INSERT INTO categories (name, user_id) VALUES (?, ?)");
-        $stmt->execute([$category_name, $user_id]);
+
+        // Check for duplicates
+        $stmt_check = $pdo->prepare("SELECT COUNT(*) FROM categories WHERE name = ? AND user_id = ?");
+        $stmt_check->execute([$category_name, $user_id]);
+        $count = $stmt_check->fetchColumn();
+
+        if ($count > 0) {
+            $_SESSION['error_message'] = "Category '$category_name' already exists!";
+            $_SESSION['form_data'] = $_POST; // Save form data
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO categories (name, user_id) VALUES (?, ?)");
+            $stmt->execute([$category_name, $user_id]);
+        }
     }
     
     // Update category
@@ -113,6 +135,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="<?php echo $_SESSION['theme'] ?? 'light'; ?>">
+
+    <div id="flash-popup-backdrop" class="flash-popup-backdrop"></div>
+    <div id="flash-popup" class="flash-popup">
+        <p id="flash-popup-message"></p>
+    </div>
+
+    <?php
+    if (isset($_SESSION['error_message'])) {
+        echo '<script>const flashMessage = ' . json_encode($_SESSION['error_message']) . ';</script>';
+        unset($_SESSION['error_message']);
+    }
+    ?>
     <div class="container">
         <header>
             <h1>To-Do List</h1>
@@ -134,17 +168,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form action="dashboard.php" method="post">
                         <div class="form-group">
                             <label for="task_name">Task Name</label>
-                            <input type="text" id="task_name" name="task_name" required autocomplete="off">
+                            <input type="text" id="task_name" name="task_name" required autocomplete="off" value="<?php echo htmlspecialchars($form_data['task_name'] ?? ''); ?>">
                         </div>
                         <div class="form-group">
                             <label for="deadline">Deadline</label>
-                            <input type="date" id="deadline" name="deadline">
+                            <input type="date" id="deadline" name="deadline" value="<?php echo htmlspecialchars($form_data['deadline'] ?? ''); ?>">
                         </div>
                         <div class="form-group">
                             <label for="category_id">Category</label>
                             <select id="category_id" name="category_id">
                                 <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category['id']; ?>">
+                                    <option value="<?php echo $category['id']; ?>"
+                                        <?php echo ((isset($form_data['category_id']) && $form_data['category_id'] == $category['id'])) ? 'selected' : ''; ?>>
                                         <?php echo htmlspecialchars($category['name']); ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -249,7 +284,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form action="dashboard.php" method="post">
                         <div class="form-group">
                             <label for="category_name">Category Name</label>
-                            <input type="text" id="category_name" name="category_name" required autocomplete="off">
+                            <input type="text" id="category_name" name="category_name" required autocomplete="off" value="<?php echo htmlspecialchars($form_data['category_name'] ?? ''); ?>">
                         </div>
                         <button type="submit" name="add_category" class="btn">Add Category</button>
                     </form>
