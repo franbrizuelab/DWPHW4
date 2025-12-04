@@ -10,6 +10,7 @@
     --link-color-light: #e74c3c;
     --button-bg-light: #3498db;
     --button-text-light: #fff;
+    --theme-toggle-bg-light: #e0e0e0;
 
     --bg-color-dark: #2c3e50;
     --text-color-dark: #ecf0f1;
@@ -19,6 +20,7 @@
     --link-color-dark: #e74c3c;
     --button-bg-dark: #3498db;
     --button-text-dark: #fff;
+    --theme-toggle-bg-dark: #425568;
 }
 
 * {
@@ -40,11 +42,18 @@ body.dark {
 }
 
 #theme-toggle {
-    background: transparent;
+    background: var(--theme-toggle-bg-light);
     border: none;
     cursor: pointer;
     border-radius: 50%;
-    padding: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.dark #theme-toggle {
+    background: var(--theme-toggle-bg-dark);
 }
 
 #theme-icon {
@@ -83,6 +92,9 @@ body.dark header h1 {
 
 .user-info {
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .user-info a {
